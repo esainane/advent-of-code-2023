@@ -16,7 +16,7 @@ copy_counter = defaultdict(lambda : 1)
 
 class Card(object):
     def __init__(self, input_line):
-        result = scratch_line.parseString(input_line, parse_all=True)
+        result = scratch_line.parse_string(input_line, parse_all=True)
         self.card_id = int(result.id)
         self.winning_numbers = result.winning_numbers
         self.our_numbers = result.our_numbers

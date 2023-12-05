@@ -14,7 +14,7 @@ scratch_line = Keyword("Card") + card_id('id') + ':' + number_list('winning_numb
 
 class Card(object):
     def __init__(self, input_line):
-        result = scratch_line.parseString(input_line, parse_all=True)
+        result = scratch_line.parse_string(input_line, parse_all=True)
         self.card_id = result.id
         self.winning_numbers = result.winning_numbers
         self.our_numbers = result.our_numbers

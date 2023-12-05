@@ -58,7 +58,7 @@ class CubeSet(object):
 class Game(object):
     def __init__(self, input_game_line: str):
         # Parse our game line
-        result = game_line.parseString(input_game_line, parse_all=True)
+        result = game_line.parse_string(input_game_line, parse_all=True)
         self.game_line = result
         self.game_number = int(self.game_line[1])
         self.cube_sets = [CubeSet(s) for s in self.game_line[3:]]
