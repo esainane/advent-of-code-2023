@@ -85,22 +85,30 @@ class Document(object):
         # Find all starting nodes
         current_names = [k for k in self.vertices.keys() if start_criteria(k)]
 
-        # Store a queue of nodes to walk from, sorted by the number of steps
-        # We want this list to always be nodes that meet the end criteria, so
-        # this is initially populated by walk_from on the starting nodes
-        q = [walk_from(n) for n in current_names]
-        heapq.heapify(q)
-        # ...and then keep incrementing the smallest one until they all have
-        # the same length
-        while any(s != q[0][0] for s, _ in q):
-            # Get the next node to walk from
-            old_steps, old_name = heapq.heappop(q)
-            # Walk from it and add it back to the queue
-            additional_steps, new_name = walk_from(old_name)
-            new_steps = old_steps + additional_steps
-            print(f'Walked from {old_name} ({old_steps}) to {new_name} ({new_steps})')
-            heapq.heappush(q, (new_steps, new_name))
-        return q[0][0]
+        # Find the first accepting node from each starting node
+        results = [walk_from(start) for start in current_names]
+
+
+        # Note that here we take advantage of a property of the dataset not
+        # guaranteed by the problem statement: the next step for each accepting
+        # node is itself, with the same length as the initial path, meaning
+        # every starting node follows an absurdly simple cycle. This means
+        # we can get away with using the lowest common multiple to find the
+        # solution.
+
+        # ......this is extremely anticlimatic.
+        assert(all((s,n) == walk_from(n) for s,n in results))
+
+        def gcd(a, b):
+            while b:
+                a, b = b, a % b
+            return a
+        # Find the lowest common multiple of all the step counts.
+        lcm = reduce(lambda a, b: a * b // gcd(a, b), (s for s,n in results))
+        print(f'lcm({[s for s,n in results]}) = {lcm}')
+        return lcm
+
+
 
 
 
